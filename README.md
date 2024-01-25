@@ -4,8 +4,9 @@
 # todo
 
 [] 還沒解決選擇後可以跳 prompt 的功能
-    - try zx::question
-    - try prompts
+    - try zx::question failed
+    - try prompts failed
+    - fzf -> failed
     - can continue try other
 
 
