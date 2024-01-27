@@ -1,19 +1,23 @@
 import clipboard from 'clipboardy'
 import jwt from 'jsonwebtoken'
 
+const qatUserId = process.env.qatUserId as string
+console.log('------->qatUserId: ', qatUserId)
+const qatSecret = process.env.qatSecret as string
+console.log('------->qatSecret: ', qatSecret)
 
-const qatUserId = `201212`
-const qatSecret = 'WeMoQAT!'
 const iat = new Date().getTime()
 const expireAfterTwoDay = iat + 48 * 60 * 60 * 1000
 
-const qatTokenUserApp = jwt.sign({
-        userId: qatUserId,
-        user_id: qatUserId,
-        iat,
-        exp: expireAfterTwoDay
-    },
-    qatSecret, {}
+const qatTokenUserApp = jwt.sign(
+  {
+    userId: qatUserId,
+    user_id: qatUserId,
+    iat,
+    exp: expireAfterTwoDay
+  },
+  qatSecret,
+  {}
 )
 
 clipboard.writeSync(`WeMo ${qatTokenUserApp}`)

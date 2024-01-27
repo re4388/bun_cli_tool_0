@@ -1,22 +1,8 @@
 
 
 
-# todo
-
-[] 還沒解決選擇後可以跳 prompt 的功能
-    - try zx::question failed
-    - try prompts failed
-    - fzf -> failed
-    - can continue try other
-
-
-
-
-
-
-
-
-
+# 留意
+- 這邊的 env 吃 zsh 的 .env, 因為 scripts 會從 global 跑起來
 
 # bun_cli_0
 
