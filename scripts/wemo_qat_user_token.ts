@@ -2,9 +2,7 @@ import clipboard from 'clipboardy'
 import jwt from 'jsonwebtoken'
 
 const qatUserId = process.env.qatUserId as string
-console.log('------->qatUserId: ', qatUserId)
 const qatSecret = process.env.qatSecret as string
-console.log('------->qatSecret: ', qatSecret)
 
 const iat = new Date().getTime()
 const expireAfterTwoDay = iat + 48 * 60 * 60 * 1000
