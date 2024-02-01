@@ -20,3 +20,4 @@ const qatTokenUserApp = jwt.sign(
 
 clipboard.writeSync(`WeMo ${qatTokenUserApp}`)
 console.log('copied to clipboard!')
+
