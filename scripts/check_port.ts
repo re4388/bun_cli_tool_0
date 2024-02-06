@@ -31,7 +31,7 @@ find('port', port).then(
     if (R.isEmpty(res)) {
       console.log('port is not being used')
     } else {
-      console.log(chalk.blue(res))
+      console.log(chalk.blue(JSON.stringify(res)))
 
       const ans = await question('kill? (y/n)')
       switch (ans) {
