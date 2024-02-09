@@ -2,6 +2,12 @@ import checkbox, { Separator } from '@inquirer/checkbox'
 import { $ } from 'bun'
 import chalk from 'chalk'
 import { escAndQToExit } from '../util/escToExit.ts'
+import exitHook from 'exit-hook'
+import restoreCursor from 'restore-cursor'
+
+exitHook(() => {
+  restoreCursor()
+})
 
 escAndQToExit()
 

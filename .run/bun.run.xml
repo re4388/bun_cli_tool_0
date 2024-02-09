@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="bun" type="RUN_ANYTHING_CONFIGURATION" factoryName="RunAnythingFactory">
-    <option name="arguments" value="$FileName$" />
-    <option name="command" value="/opt/homebrew/bin/bun" />
-    <option name="inputText" />
-    <option name="workingDirectory" value="$FileDir$" />
-    <method v="2" />
-  </configuration>
-</component>

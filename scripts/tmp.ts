@@ -3,12 +3,20 @@ import select from '@inquirer/select'
 import { $ } from 'zx'
 import { escAndQToExit } from '../util/escToExit.ts'
 
+const quokkaTSPath = '/Users/re4388/Documents/wemo_doc/quokkaTS.ts'
+const quokkaJSPath = '/Users/re4388/Documents/wemo_doc/quokkaJS.js'
+
 escAndQToExit()
 
 // 建立路徑
-const fileName = moment.utc(Date.now()).tz('Asia/Taipei').format().replaceAll(/[-:T]/g, '_').split('+')[0]
-const filePath = `/Users/re4388/tmp/tmp_${fileName}`
+const fileName = moment
+  .utc(Date.now())
+  .tz('Asia/Taipei')
+  .format()
+  .replaceAll(/[-:T]/g, '_')
+  .split('+')[0]
 
+const filePath = `/Users/re4388/tmp/tmp_${fileName}`
 // /Users/re4388/tmp/tmp_2024_02_04_18_09_16
 
 const editor = await select({

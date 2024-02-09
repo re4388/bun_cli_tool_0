@@ -1,12 +1,12 @@
 import { $ } from 'zx'
 import { getRemoteRepo } from '../util/git_clone_depth1.ts'
 import select, { Separator } from '@inquirer/select'
-import pe from '../util/prettyError.ts'
 import chalk from 'chalk'
 import clipboard from 'clipboardy'
 import { escAndQToExit } from '../util/escToExit.ts'
+import { errLog } from '../util/errorLog.ts'
 
-// escAndQToExit()
+escAndQToExit()
 
 const answer = await select({
   message: 'Select...',
@@ -45,7 +45,7 @@ switch (answer) {
     try {
       await copyProjectToPath()
     } catch (error) {
-      pe.render(error)
+      errLog(error)
       throw error
     }
     break
@@ -54,7 +54,7 @@ switch (answer) {
     try {
       await getRemoteRepo()
     } catch (error) {
-      pe.render(error)
+      errLog(error)
       throw error
     }
 

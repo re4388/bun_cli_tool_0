@@ -1,6 +1,8 @@
-討論 yr plab with wife
+討論 yr plan with wife
 a command to kick off pg/redis/other
-add double confirm to remove all and hint abt it goes trash
-switch b/n ctrl and fn
-xy problem
-add DIE in current vim
+思考一下有沒有必要用套件，甚至有沒有必要 retry
+try chatgpt at terminal, is it more fast? check awesom chatGpt
+note abt what a req need to consider and give more thoughts
+learn got advanced example
+nvim imprpve: ai auto suggest, think about it?
+learn rg

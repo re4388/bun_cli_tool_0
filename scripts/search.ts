@@ -1,6 +1,9 @@
 import select from '@inquirer/select'
 import { input } from '@inquirer/prompts'
 import open from 'open'
+import { escAndQToExit } from '../util/escToExit.ts'
+
+escAndQToExit()
 
 const searchPlace = await select({
   message: 'Select...',
@@ -19,19 +22,27 @@ const searchPlace = await select({
       name: 'find awesome',
       value: 'find awesome',
       description: 'find awesome repo in github'
+    },
+    {
+      name: 'errorCodes',
+      value: 'errorCodes',
+      description: '通常適合 retry 的errorCodes 參考'
     }
-    // {
-    //   name: 'show size',
-    //   value: 'show size',
-    //   description: 'show size for remote repo'
-    // }
   ]
 })
 
 switch (searchPlace) {
+  case 'errorCodes': {
+    await open(
+      `https://github.com/sindresorhus/got/blob/main/documentation/7-retry.md#errorcodes`
+    )
+    break
+  }
   case 'HackerNews': {
     const query = await input({ message: 'Enter query' })
-    await open(`https://hn.algolia.com/?dateRange=all&page=0&prefix=false&query=${query}&sort=byPopularity&type=story`)
+    await open(
+      `https://hn.algolia.com/?dateRange=all&page=0&prefix=false&query=${query}&sort=byPopularity&type=story`
+    )
     break
   }
   case 'stackoverflow': {

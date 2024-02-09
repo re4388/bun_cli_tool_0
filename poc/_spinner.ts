@@ -1,5 +1,5 @@
 import ora from 'ora'
-import pe from '../util/prettyError.ts'
+import pe from '../util/errorLog.ts'
 
 // Simulating a long-running function
 async function getResource() {

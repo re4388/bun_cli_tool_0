@@ -1,3 +1,3 @@
 import { $ } from 'zx'
 
-await $`fast`
+await $`fast`.quiet()

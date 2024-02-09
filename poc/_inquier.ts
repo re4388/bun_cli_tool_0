@@ -1,3 +1,7 @@
+import { edit } from 'external-editor'
+const data = edit('\n\n# Please write your text above')
+console.log(data)
+
 // import editor from '@inquirer/editor'
 //
 // const answer = await editor({
@@ -7,17 +11,17 @@
 
 import inquirer from 'inquirer'
 
-inquirer
-  .prompt([
-    {
-      type: 'editor',
-      name: 'story',
-      message: 'Tell me a story, a really long one!'
-    }
-  ])
-  .then((answers: { story: any }) => {
-    console.info('Answer:', answers.story)
-  })
+// inquirer
+//   .prompt([
+//     {
+//       type: 'editor',
+//       name: 'story',
+//       message: 'Tell me a story, a really long one!'
+//     }
+//   ])
+//   .then((answers: { story: any }) => {
+//     console.info('Answer:', answers.story)
+//   })
 // import input from '@inquirer/input'
 //
 // const answer = await input({

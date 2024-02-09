@@ -1,9 +1,7 @@
 import { question } from 'zx'
 import { $ } from 'bun'
-import pe from '../util/prettyError.ts'
+import { errLog } from '../util/errorLog.ts'
 import chalk from 'chalk'
-import { escAndQToExit } from '../util/escToExit.ts'
-import readline from 'readline'
 import { appendFile } from 'node:fs/promises'
 import * as R from 'ramda'
 import figlet from 'figlet'
@@ -13,32 +11,46 @@ import exitHook from 'exit-hook'
 import restoreCursor from 'restore-cursor'
 import trash from 'trash'
 import { z } from 'zod'
+import { edit } from 'external-editor'
+import { isFileExist } from '../util/isFileExist.ts'
 
 exitHook(() => {
   restoreCursor()
 })
 
+////////////////// const need to at top /////////////////
+
+const removeLenSchema = z
+  .string({
+    required_error: 'no must be a number within the no. range'
+  })
+  .trim()
+  .transform(covertAndCheck)
+
 const FILE_PATH = '/Users/re4388/project/personal/lang/bun/bun_cli_0/data/todoFile.txt'
 
-let { len, char } = getLines()
-// console.log('------->char: ', char)
-// console.log('------->len: ', len)
+////////////////// const need to at top /////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////
+function debugUse() {
+  let { len, char } = getLines()
+  console.log('------->char: ', char)
+  console.log('------->len: ', len)
+}
+
+/////////////////main////////////////////////////////////////////////////////////////////
 main()
   .then((res) => console.log(res))
-  .catch((err) => console.error(pe.render(err)))
+  .catch((err) => console.error((err: any) => errLog(err)))
 
-////////////////////////////////////////////////////////////////////////////////////////////
 async function main() {
   showTitle()
-  // escAndQToExit()
 
   let running = true
 
   while (running) {
     await showReminder()
 
+    restoreCursor()
     const action = await chooseAction()
     switch (action) {
       case 'add': {
@@ -49,8 +61,12 @@ async function main() {
         await remove()
         break
       }
+      case 'update': {
+        await update()
+        break
+      }
       case 'remove all': {
-        await trash([FILE_PATH])
+        await removeAll()
         break
       }
 
@@ -63,6 +79,18 @@ async function main() {
         console.log('no this option')
       }
     }
+  }
+}
+
+/////////////////main////////////////////////////////////////////////////////////////////
+async function removeAll() {
+  const yesOrNo = await question('Are You Sure?(y/n) tip: files goes into trash can')
+  if (yesOrNo === 'y') {
+    await trash([FILE_PATH])
+  } else {
+    console.log('')
+    console.log('***no operation***')
+    console.log('')
   }
 }
 
@@ -81,6 +109,11 @@ async function chooseAction(): Promise<string> {
         name: 'remove',
         value: 'remove',
         description: 'remove a reminder'
+      },
+      {
+        name: 'update',
+        value: 'update',
+        description: 'update an item'
       },
       {
         name: 'remove all',
@@ -116,35 +149,62 @@ async function add() {
   }
 }
 
-async function remove() {
-  const input = await question('the no. you want to delete? ')
-  const removeLenSchema = z
-    .string({
-      required_error: 'no must be a number within the no. range'
-    })
-    .trim()
-    .transform(covertAndCheck)
-
+async function update() {
+  const line = await question('the no. you want to update? ')
   try {
+    removeLenSchema.parse(line)
+    const text = getItemByLine(line)
+
+    // open default editor to edit the current line
+    const updatedText = edit(`${text}`)
+    updateText({ line, updatedText })
+  } catch (err) {
+    errLog(err)
+  }
+}
+
+function updateText(param: { line: string; updatedText: string }) {
+  const { line, updatedText } = param
+  try {
+    // Read the content of the file synchronously
+    const data = fs.readFileSync(FILE_PATH, 'utf8')
+
+    // Split the content into an array of lines
+    const lines = data.split('\n')
+    lines[Number(line) - 1] = updatedText.trim()
+    // Join the remaining lines back into a string
+    // const updatedContent = lines.slice(0, -1).join('\n')
+    const updatedContent = lines.join('\n')
+
+    // Write the updated content back to the file synchronously
+    fs.writeFileSync(FILE_PATH, updatedContent, 'utf8')
+  } catch (err) {
+    errLog(err)
+  }
+}
+
+async function remove() {
+  try {
+    const input = await question('the no. you want to delete? ')
     removeLenSchema.parse(input)
-    removeLineFromFile(input)
-  } catch (error) {
-    console.log('------->error: ', error)
-    console.log(chalk.red('請輸入有效的 no.'))
+    const yesOrNo = await question('Are You Sure?(y/n)')
+    if (yesOrNo === 'y') removeLineFromFile(input)
+  } catch (err) {
+    errLog(err)
   }
 }
 
 function showTitle() {
   console.log(
     figlet.textSync('Reminder', {
-      font: 'Standard',
+      font: 'Larry 3D',
       horizontalLayout: 'default',
       verticalLayout: 'default',
       width: 80,
       whitespaceBreak: true
     })
   )
-  console.log(chalk.red('esc or q to quit'))
+  console.log(chalk.blue('keep note in lighting speed!'))
   console.log('')
 }
 
@@ -155,6 +215,19 @@ function getLines() {
   return {
     len,
     char
+  }
+}
+
+function getItemByLine(line: string) {
+  try {
+    // Read the content of the file synchronously
+    const data = fs.readFileSync(FILE_PATH, 'utf8')
+
+    // Split the content into an array of lines
+    const lines = data.split('\n')
+    return lines[Number(line) - 1]
+  } catch (err) {
+    errLog(err)
   }
 }
 
@@ -177,21 +250,17 @@ function removeLineFromFile(lineToRemove: string) {
 
     // console.log('Line removed successfully.')
   } catch (err) {
-    console.error(pe.render(err))
+    errLog(err)
   }
 }
 
 async function readFile() {
   // handle file is not exist, after trash it
-  try {
-    fs.accessSync(FILE_PATH, fs.constants.F_OK)
-  } catch (err) {
+  if (!isFileExist(FILE_PATH)) {
     await $`touch ${FILE_PATH}`.quiet() // No output
-    // fs.writeFileSync(FILE_PATH, '', 'utf8')
   }
-  const fileContent = fs.readFileSync(FILE_PATH, 'utf8')
-  const todos = Bun.file(FILE_PATH)
-  return await todos.text()
+
+  return await Bun.file(FILE_PATH).text()
 }
 
 function printOutTodos(res: string) {
@@ -201,8 +270,6 @@ function printOutTodos(res: string) {
     console.log(`${numOfTodo++}. ${line}`)
   })
   console.log('================================================================')
-  console.log('')
-  console.log('')
   console.log('')
 }
 

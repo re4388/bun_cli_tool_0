@@ -1,7 +1,9 @@
-
 import { $ } from 'zx'
-await $`lsof -iTCP -sTCP:LISTEN | awk  '{print $1, $2,$9}' | fzf`
 
+let cmd1 = `lsof -iTCP -sTCP:LISTEN | awk  '{print $1, $2,$9}' | fzf`
+let cmd2 = `lsof -i -nP | grep LISTEN  | fzf`
+
+await $`lsof -i -nP | grep LISTEN | awk  '{print $1, $2,$9}' | fzf`
 
 /**
  *
@@ -18,8 +20,5 @@ await $`lsof -iTCP -sTCP:LISTEN | awk  '{print $1, $2,$9}' | fzf`
  *
  */
 
-
-
 // import { $ } from "bun";
 // await $`lsof -iTCP -sTCP:LISTEN | awk  '{print $1, $2,$9}' | peco`
-
