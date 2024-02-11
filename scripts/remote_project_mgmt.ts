@@ -61,7 +61,8 @@ switch (answer) {
     break
   }
   case 'show size': {
-    await $`cd ${gitClonePath} && gdu-go`
+    // await $`cd ${gitClonePath} && gdu-go`
+    await $`sh /Users/re4388/project/personal/my-github-pjt/dotfiles/zsh/check_git_clone_pjt.sh`
 
     const txt = 'or..you can go to directory and goes into interactive mode with "du"'
     console.log(chalk.green(txt))
