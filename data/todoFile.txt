@@ -1,20 +1,4 @@
-討論 yr plan with wife
-a command to kick off pg/redis/other
-思考一下有沒有必要用套件，甚至有沒有必要 retry
-try chatgpt at terminal, is it more fast? check awesom chatGpt
-note abt what a req need to consider and give more thoughts
-nvim imprpve: ai auto suggest, think about it?
-practice heredoc
-play llm sqltie, know what I can find over there
-see LLM doc for knowing most of it
-think about if I want to use another local llm? maybe using ollama?
-think about some idea to use cli for llm
-study some open router llm, what they are for?
-save this into template: cat a22 | llmfree "summarize this doc, in bullet point, in Chinese"
-try claude for <10000 token
-do some stuff based on morning article
-do some practical application on embedding
-check Vicuna
-idea: gitlab desc and use llm to gen
-any aything come from cli output for everyday use can play with llm to do more stuff
-how to ask chatgpt to henerate pure code 
+take note on refactor book
+pjt: chrome ext, click and get content and run a script (ttok, gpt)
+can I modify the trending key, use tab to select and enter to proceed?
+extned my qq: end result: use qq to personal and use qq_wemo for qq for wemo or qq for xx

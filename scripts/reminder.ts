@@ -1,4 +1,5 @@
 import { question } from 'zx'
+const { Confirm } = require('enquirer')
 import { $ } from 'bun'
 import { errLog } from '../util/errorLog.ts'
 import chalk from 'chalk'
@@ -187,8 +188,24 @@ async function remove() {
   try {
     const input = await question('the no. you want to delete? ')
     removeLenSchema.parse(input)
-    const yesOrNo = await question('Are You Sure?(y/n)')
-    if (yesOrNo === 'y') removeLineFromFile(input)
+
+    const prompt = new Confirm({
+      name: 'question',
+      message: 'confirm to remove?',
+      initial: true
+    })
+
+    let ans
+    try {
+      ans = await prompt.run()
+    } catch (error) {
+      console.log(error)
+    }
+
+    // const yesOrNo = await question('Are You Sure?(y/n)')
+    if (ans === true) {
+      removeLineFromFile(input)
+    }
   } catch (err) {
     errLog(err)
   }
@@ -240,7 +257,10 @@ function removeLineFromFile(lineToRemove: string) {
     const lines = data.split('\n')
 
     // Find and remove the specified line
-    const newLines = [...lines.slice(0, Number(lineToRemove) - 1), ...lines.slice(Number(lineToRemove))]
+    const newLines = [
+      ...lines.slice(0, Number(lineToRemove) - 1),
+      ...lines.slice(Number(lineToRemove))
+    ]
 
     // Join the remaining lines back into a string
     const updatedContent = newLines.join('\n')

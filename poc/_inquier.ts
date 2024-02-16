@@ -1,6 +1,24 @@
-import { edit } from 'external-editor'
-const data = edit('\n\n# Please write your text above')
-console.log(data)
+import checkbox, { Separator } from '@inquirer/checkbox'
+
+const answer = await checkbox({
+  message: 'Select a package manager',
+  choices: [
+    { name: 'npm', value: 'npm' },
+    { name: 'yarn', value: 'yarn' },
+    new Separator(),
+    { name: 'pnpm', value: 'pnpm', disabled: true },
+    {
+      name: 'pnpm',
+      value: 'pnpm',
+      disabled: '(pnpm is not available)'
+    }
+  ]
+})
+
+//
+// import { edit } from 'external-editor'
+// const data = edit('\n\n# Please write your text above')
+// console.log(data)
 
 // import editor from '@inquirer/editor'
 //
