@@ -1,4 +1,0 @@
-take note on refactor book
-pjt: chrome ext, click and get content and run a script (ttok, gpt)
-can I modify the trending key, use tab to select and enter to proceed?
-extned my qq: end result: use qq to personal and use qq_wemo for qq for wemo or qq for xx

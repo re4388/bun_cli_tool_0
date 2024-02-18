@@ -19,16 +19,12 @@ exitHook(() => {
   restoreCursor()
 })
 
-////////////////// const need to at top /////////////////
-
 const removeLenSchema = z
   .string({
     required_error: 'no must be a number within the no. range'
   })
   .trim()
   .transform(covertAndCheck)
-
-const FILE_PATH = '/Users/re4388/project/personal/lang/bun/bun_cli_0/data/todoFile.txt'
 
 ////////////////// const need to at top /////////////////
 
@@ -38,12 +34,18 @@ function debugUse() {
   console.log('------->len: ', len)
 }
 
+let data_path: string
+
 /////////////////main////////////////////////////////////////////////////////////////////
 main()
   .then((res) => console.log(res))
   .catch((err) => console.error((err: any) => errLog(err)))
 
 async function main() {
+  const projectChosen = process.argv[2]
+  const current_project = R.defaultTo('personal', projectChosen)
+  data_path = `/Users/re4388/project/personal/lang/bun/bun_cli_0/data/reminder/${current_project}_todoFile.txt`
+
   showTitle()
 
   let running = true
@@ -87,7 +89,7 @@ async function main() {
 async function removeAll() {
   const yesOrNo = await question('Are You Sure?(y/n) tip: files goes into trash can')
   if (yesOrNo === 'y') {
-    await trash([FILE_PATH])
+    await trash([data_path])
   } else {
     console.log('')
     console.log('***no operation***')
@@ -144,9 +146,9 @@ async function add() {
   const input = await question('write down your note: ')
   let { len, char } = getLines()
   if (len === 1 && char === 0) {
-    await appendFile(FILE_PATH, `${input}`)
+    await appendFile(data_path, `${input}`)
   } else {
-    await appendFile(FILE_PATH, `\n${input}`)
+    await appendFile(data_path, `\n${input}`)
   }
 }
 
@@ -168,7 +170,7 @@ function updateText(param: { line: string; updatedText: string }) {
   const { line, updatedText } = param
   try {
     // Read the content of the file synchronously
-    const data = fs.readFileSync(FILE_PATH, 'utf8')
+    const data = fs.readFileSync(data_path, 'utf8')
 
     // Split the content into an array of lines
     const lines = data.split('\n')
@@ -178,7 +180,7 @@ function updateText(param: { line: string; updatedText: string }) {
     const updatedContent = lines.join('\n')
 
     // Write the updated content back to the file synchronously
-    fs.writeFileSync(FILE_PATH, updatedContent, 'utf8')
+    fs.writeFileSync(data_path, updatedContent, 'utf8')
   } catch (err) {
     errLog(err)
   }
@@ -212,6 +214,7 @@ async function remove() {
 }
 
 function showTitle() {
+  console.log('a3')
   console.log(
     figlet.textSync('Reminder', {
       font: 'Larry 3D',
@@ -226,7 +229,7 @@ function showTitle() {
 }
 
 function getLines() {
-  const data = fs.readFileSync(FILE_PATH, 'utf8')
+  const data = fs.readFileSync(data_path, 'utf8')
   const len = data.split('\n').length
   const char = data.split('').length
   return {
@@ -238,7 +241,7 @@ function getLines() {
 function getItemByLine(line: string) {
   try {
     // Read the content of the file synchronously
-    const data = fs.readFileSync(FILE_PATH, 'utf8')
+    const data = fs.readFileSync(data_path, 'utf8')
 
     // Split the content into an array of lines
     const lines = data.split('\n')
@@ -251,7 +254,7 @@ function getItemByLine(line: string) {
 function removeLineFromFile(lineToRemove: string) {
   try {
     // Read the content of the file synchronously
-    const data = fs.readFileSync(FILE_PATH, 'utf8')
+    const data = fs.readFileSync(data_path, 'utf8')
 
     // Split the content into an array of lines
     const lines = data.split('\n')
@@ -266,7 +269,7 @@ function removeLineFromFile(lineToRemove: string) {
     const updatedContent = newLines.join('\n')
 
     // Write the updated content back to the file synchronously
-    fs.writeFileSync(FILE_PATH, updatedContent, 'utf8')
+    fs.writeFileSync(data_path, updatedContent, 'utf8')
 
     // console.log('Line removed successfully.')
   } catch (err) {
@@ -276,11 +279,11 @@ function removeLineFromFile(lineToRemove: string) {
 
 async function readFile() {
   // handle file is not exist, after trash it
-  if (!isFileExist(FILE_PATH)) {
-    await $`touch ${FILE_PATH}`.quiet() // No output
+  if (!isFileExist(data_path)) {
+    await $`touch ${data_path}`.quiet() // No output
   }
 
-  return await Bun.file(FILE_PATH).text()
+  return await Bun.file(data_path).text()
 }
 
 function printOutTodos(res: string) {

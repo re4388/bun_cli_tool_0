@@ -6,7 +6,7 @@ import clipboard from 'clipboardy'
 import { escAndQToExit } from '../util/escToExit.ts'
 import { errLog } from '../util/errorLog.ts'
 
-escAndQToExit()
+// escAndQToExit()
 
 const answer = await select({
   message: 'Select...',
