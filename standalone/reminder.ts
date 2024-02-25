@@ -214,7 +214,6 @@ async function remove() {
 }
 
 function showTitle() {
-  console.log('a3')
   console.log(
     figlet.textSync('Reminder', {
       font: 'Larry 3D',
