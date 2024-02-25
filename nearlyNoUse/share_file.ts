@@ -2,7 +2,7 @@
 import { tunnelmole } from 'tunnelmole'
 import { question, $ } from 'zx'
 // import { $ } from 'bun'
-const tmp = require('tmp')
+const tmp = require('scripts/tmp.ts')
 const path = require('node:path')
 import * as R from 'ramda'
 import { ln } from '../util/symbolicLink.ts'

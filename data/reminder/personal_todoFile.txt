@@ -1,7 +1,4 @@
 take note on refactor book
-extned my qq: end result: use qq to personal and use qq_wemo for qq for wemo or qq for xx
-fix getSummary bash func
-try lm studio
-clean up my wbslicp
-use nodejs to get the clipboard copy and summup in bullet point in chinese
-use openai nodejs api and gimini api
+call mon on trip this week
+plan trip this weekend
+think about where to go deep

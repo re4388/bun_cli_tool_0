@@ -1,17 +1,21 @@
 import lunr from 'lunr'
 
+// 有兩個可以搜尋的欄位： title 和 body ，以及一個可以用作識別符的 id 欄位
 const documents = [
   {
-    name: 'Lunr',
-    text: 'Like Solr, but much smaller, and not as bright.'
+    id: 'http://my.blog/post1',
+    title: 'job',
+    body: 'We will use the above array of documents to build our index'
   },
   {
-    name: 'React',
-    text: 'A JavaScript library for building user interfaces.'
+    id: 'http://my.blog/post2',
+    title: 'banana',
+    body: 'We want to search the text field'
   },
   {
-    name: 'Lodash',
-    text: 'A modern JavaScript utility library delivering modularity, performance & extras.'
+    id: 'http://my.blog/post3',
+    title: 'apple',
+    body: 's define our index and add these documents to it.'
   }
 ]
 

@@ -46,8 +46,8 @@ switch (searchPlace) {
     break
   }
   case 'stackoverflow': {
-    const query = await input({ message: 'Enter query' })
-    await open(`https://www.google.com/search?q=${query}+site%3Astackoverflow.com`)
+    const QUERY = await input({ message: 'Enter query' })
+    await open(`https://www.google.com/search?q=${QUERY}+site%3Astackoverflow.com`)
     break
   }
   case 'find awesome': {
