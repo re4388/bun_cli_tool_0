@@ -6,7 +6,7 @@ import { escAndQToExit } from '../util/escToExit.ts'
 const quokkaTSPath = '/Users/re4388/Documents/wemo_doc/quokkaTS.ts'
 const quokkaJSPath = '/Users/re4388/Documents/wemo_doc/quokkaJS.js'
 
-escAndQToExit()
+// escAndQToExit()
 
 // 建立路徑
 const fileName = moment
