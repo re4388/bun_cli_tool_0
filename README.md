@@ -28,6 +28,10 @@ bun add -d @types/figlet
 ```
 
 
+# apple
+- apple
+- banan
+
 
 # related packages
 - [yargs/yargs: yargs the modern, pirate-themed successor to optimist.](https://github.com/yargs/yargs)

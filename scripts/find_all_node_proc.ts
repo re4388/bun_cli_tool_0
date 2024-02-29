@@ -2,8 +2,6 @@ import find from 'find-process'
 import { $ } from 'zx'
 import chalk from 'chalk'
 
-// throw new Error('stop')
-
 const TAGS = {
   vscode_ext: {
     displayText: 'Vscode extension',
@@ -98,8 +96,8 @@ function mutateProcInfosByAddTag(processInfos: ProcessInfo[]) {
 }
 
 async function main() {
-  const { processInfos: pInfo, lenOfProc } = await getProcInfoV3()
-  const processInfos: ProcessInfo[] = pInfo
+  const { processInfos: pInfo, lenOfProc } = (await getProcInfoV3()) ?? {}
+  const processInfos: ProcessInfo[] | undefined = pInfo
 
   if (processInfos === undefined) {
     console.log('no node process found')
@@ -161,12 +159,19 @@ function display(input: { pid: number; cmd: string[] }[], title: string) {
 }
 
 async function getProcInfoV3() {
-  const processOutput = await $`pgrep -a node`.quiet()
-  const pids = processOutput.stdout.trim().split('\n')
-  console.log('------->pids: ', pids)
+  let res: any[] = []
+  try {
+    const processOutput = await $`pgrep -a node`.quiet()
+    const pids = processOutput.stdout.trim().split('\n')
+    console.log('------->pids: ', pids)
 
-  let promises = pids.map((pid) => find('pid', pid))
-  let res = (await Promise.all(promises)).flat()
+    let promises = pids.map((pid) => find('pid', pid))
+    let res = (await Promise.all(promises)).flat()
+  } catch (error) {
+    console.log('no node process found')
+    return
+  }
+
   return {
     processInfos: res.map((r) => ({ pid: r.pid, cmd: r.cmd })),
     lenOfProc: res.length
