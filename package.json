@@ -35,6 +35,7 @@
     "cli-table3": "^0.6.3",
     "clipboardy": "^4.0.0",
     "commander": "^12.0.0",
+    "csv-parse": "^5.5.5",
     "csvtojson": "^2.0.10",
     "enquirer": "^2.4.1",
     "env-paths": "^3.0.0",
