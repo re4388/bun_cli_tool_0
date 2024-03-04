@@ -1,8 +1,10 @@
+import crypto from 'crypto'
 import { JWT } from 'google-auth-library'
 import creds from '../../secret/spread-sheets.json' // the file saved above
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { split } from 'ramda'
 import { appendFile } from 'node:fs/promises'
+import { deprecatedEndpointBasePath, hashString } from './utils.ts'
 const fs = require('fs').promises
 
 ///////////////////////////////////////
@@ -13,13 +15,11 @@ const SCOPES = [
   'https://www.googleapis.com/auth/drive.file'
 ]
 const Google_DOC_ID = `19N5k1kAVBtYPo06QFkP4i1ZFzWj0YLzOnW6ohUDWO1w`
-
-const basePath = `/Users/re4388/project/personal/lang/bun/bun_cli_0/scripts/deprecated_endpoint`
-
-const hashPath = `${basePath}/hash/`
+const hashPath = `${deprecatedEndpointBasePath}/hash/`
 
 const titleToVerInfoMap = new Map()
 const endpointList: string[] = []
+const filePaths: string[] = []
 ///////////////////////////////////
 ///////////////////////////////////
 ///////////////////////////////////
@@ -31,17 +31,17 @@ function isSheetMatching(sheet: string) {
 
 async function getSheetDataIntoFileSystem() {
   const doc = await initDoc()
-  console.log(doc.title)
+  // console.log(doc.title)
 
   const numberOfSheet = doc.sheetCount
-  console.log('numberOfSheet', numberOfSheet)
+  // console.log('numberOfSheet', numberOfSheet)
   const matchingSheets = getMatchingSheet(doc)
 
   let sheetCount = 0
   for (const sheet of matchingSheets) {
     sheetCount++
     const sheetTitle = sheet.title
-    console.log('------->title: ', sheetTitle)
+    // console.log('------->title: ', sheetTitle)
     // console.log(sheet.rowCount)
     const rows = await sheet.getRows() // can pass in { limit, offset }
     // console.log('rows', rows)
@@ -53,10 +53,9 @@ async function getSheetDataIntoFileSystem() {
       endpointList.push(endpoint)
       const hitCount = row.get('Hit Count')
       const versionDetail = row.get('Version Details')
-      console.log('hitCount', hitCount)
-      console.log('endpoint', endpoint)
-      const filePath = hashPath + hashApiStringToFileName(endpoint).toString()
-
+      // console.log('hitCount', hitCount)
+      // console.log('endpoint', endpoint)
+      const filePath = hashPath + hashString(endpoint).toString()
       updateTitleToVerInfoMap(sheetTitle, versionDetail, hitCount)
 
       const fileExist = await Bun.file(filePath).exists()
@@ -67,31 +66,35 @@ async function getSheetDataIntoFileSystem() {
       } else {
         await fs.writeFile(filePath, csvData.join('\n'))
       }
-      if (rowCount === 5) break
+      // test purpose
+      // if (rowCount === 5) break
     }
-    if (sheetCount === 5) break
+    titleToVerInfoMap.clear()
+    // clean up map
+    // test purpose
+    // if (sheetCount === 5) break
   }
 }
 
 await getSheetDataIntoFileSystem()
+// console.log(titleToVerInfoMap)
 await saveEndpointListIntoJSON()
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 async function saveEndpointListIntoJSON() {
   // Convert the data to JSON and write it to a file
   try {
     await fs.writeFile(
-      `${basePath}/endpointList.json`,
+      `${deprecatedEndpointBasePath}/endpointList.json`,
       JSON.stringify([...new Set(endpointList)], null, 2)
     )
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
-
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
 
 function covertMapToCSV(sheetTitle: string, fileExist: boolean) {
   let data = []
@@ -122,9 +125,9 @@ async function initDoc() {
 }
 
 function hashApiStringToFileName(str: string) {
-  return str.split('').reduce((acc, char) => {
-    return acc + char.charCodeAt(0)
-  }, 0)
+  let hash = crypto.createHash('sha256')
+  hash.update(str)
+  return hash.digest('hex')
 }
 
 function getMatchingSheet(doc: any) {
@@ -137,20 +140,23 @@ function getMatchingSheet(doc: any) {
   return matchingSheets
 }
 
-function updateTitleToVerInfoMap(title: string, verInfo: string, hitCount: number) {
-  if (titleToVerInfoMap.has(title)) {
+function updateTitleToVerInfoMap(
+  sheetTitle: string,
+  versionDetail: string,
+  hitCount: number
+) {
+  if (versionDetail === undefined) {
     return
-  } else {
-    const arr = verInfo.split(', ')
-    const obj = arr.reduce(
-      (acc, curr) => {
-        const [key, value] = split(': ', curr)
-        acc[key] = value
-        return acc
-      },
-      {} as { [key: string]: string }
-    )
-    obj['hitCount'] = String(hitCount)
-    titleToVerInfoMap.set(title, obj)
   }
+  const arr = versionDetail.split(', ')
+  const obj = arr.reduce(
+    (acc, curr) => {
+      const [key, value] = split(': ', curr)
+      acc[key] = value
+      return acc
+    },
+    {} as { [key: string]: string }
+  )
+  obj['hitCount'] = String(hitCount)
+  titleToVerInfoMap.set(sheetTitle, obj)
 }

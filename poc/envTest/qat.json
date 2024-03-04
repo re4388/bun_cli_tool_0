@@ -1,0 +1,17 @@
+[
+  {
+    "vehicleModelId": "1",
+    "scooterGroupId": "0",
+    "pricingGroupId": "0"
+  },
+  {
+    "vehicleModelId": "1",
+    "scooterGroupId": "20",
+    "pricingGroupId": "20"
+  },
+  {
+    "vehicleModelId": "2",
+    "scooterGroupId": "0",
+    "pricingGroupId": "88"
+  }
+]
