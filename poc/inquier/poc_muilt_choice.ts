@@ -1,5 +1,6 @@
 const { MultiSelect } = require('enquirer')
 
+const selected_item = `typescript`
 function openUrl(url: string) {
   ;`https://github.com/trending/${selected_item}\?since=weekly`
 }

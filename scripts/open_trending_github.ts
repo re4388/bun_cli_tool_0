@@ -21,7 +21,7 @@ const languages = await checkbox({
     { name: 'C', value: 'c' },
     { name: 'Shell', value: 'shell' },
     { name: 'Java', value: 'java' },
-    { name: 'All', value: 'All' }
+    { name: 'All', value: '' }
   ]
 })
 

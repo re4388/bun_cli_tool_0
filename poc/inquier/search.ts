@@ -1,7 +1,7 @@
 import select from '@inquirer/select'
 import { input } from '@inquirer/prompts'
 import open from 'open'
-import { escAndQToExit } from '../util/escToExit.ts'
+import { escAndQToExit } from '../../util/escToExit.ts'
 
 escAndQToExit()
 

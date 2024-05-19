@@ -1,5 +1,5 @@
 import { db } from './db'
-import * as schema from './schema'
+import * as schema from './schema.ts'
 
 await db.insert(schema.enumInHermes).values([
   {

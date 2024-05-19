@@ -773,8 +773,8 @@ function hashString(str: string) {
 let list = ['post /v2/scooters/force-online', 'post /service.asmx/KeyPageInfo']
 
 // Create a hash for each item in the list
-let hash = crypto.createHash('sha256')
-hash.update(item)
-hash.digest('hex')
-
-console.log(hashedList)
+// let hash = crypto.createHash('sha256')
+// hash.update(item)
+// hash.digest('hex')
+//
+// console.log(hashedList)

@@ -1,7 +1,7 @@
 import OpenAI from 'openai'
-import { question } from 'zx'
+// import { question } from 'zx'
 
-const text = await question('question? ')
+// const text = await question('question? ')
 
 const openAPIKey = process.env.OPENAI_API_KEY as string
 
@@ -17,7 +17,7 @@ const openai = new OpenAI({
 
 async function main() {
   const stream = await openai.chat.completions.create({
-    messages: [{ role: 'user', content: text }],
+    messages: [{ role: 'user', content: 'hello' }],
     model: 'gpt-3.5-turbo-0125',
     stream: true
   })
