@@ -1,9 +1,8 @@
 import { $ } from 'zx'
 import { getRemoteRepo } from '../util/git_clone_depth1.ts'
-import select, { Separator } from '@inquirer/select'
+import select from '@inquirer/select'
 import chalk from 'chalk'
 import clipboard from 'clipboardy'
-import { escAndQToExit } from '../util/escToExit.ts'
 import { errLog } from '../util/errorLog.ts'
 
 enum OPTION {
