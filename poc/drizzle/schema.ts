@@ -5,3 +5,4 @@ export const enumInHermes = sqliteTable('enumInHermes', {
   name: text('name'),
   content: text('enum_content')
 })
+

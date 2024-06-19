@@ -15,6 +15,5 @@ const fzfOptions = [
   '--preview',
   `cat {}`
 ]
-
 const selection = await fzf(selections, fzfOptions)
 console.log('------->selection: ', selection)
