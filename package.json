@@ -78,7 +78,7 @@
     "lunr": "^2.3.9",
     "meow": "^13.1.0",
     "messaging-api-line": "^1.1.0",
-    "moment-timezone": "^0.5.44",
+    "moment-timezone": "^0.5.45",
     "ngrok": "^5.0.0-beta.2",
     "omelette": "^0.4.17",
     "open": "^10.0.3",
